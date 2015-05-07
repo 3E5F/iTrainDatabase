@@ -1,10 +1,10 @@
 -- The database for term project CMPE 138
+
 drop database if exists Train_Project;
 create database Train_Project;
 use Train_Project;
 
 SET SQL_SAFE_UPDATES = 0;
-#SET foreign_key_checks = 0;
 
 create table Accident_Reports
 (	time_	 time(0),  
@@ -29,7 +29,7 @@ create table staff -- disjoint superclass
 create table station_staff -- disjoint subclass
 (
 	S_id  numeric(9,0),
-	foreign key (S_id) references staff(E_id) on delete set null 
+	foreign key (S_id) references staff(E_id) on delete set  null 
 );
 create table conductor -- disjoint subclass
 (
@@ -74,12 +74,16 @@ create table verifies_ticket
 
 	foreign key(V_id) references staff(E_id) on delete set  null,
 	foreign key(pa_id) references passengers(P_id) on delete set null
+	
 );
 create table tickets
 (
 	
 	destination   varchar(15), 
-	ticket_no     integer
+	ticket_no     integer,
+	train_no      integer,
+	t_id          numeric(9,0),
+	foreign key(t_id) references passengers(P_id) 
 	
 
 );
@@ -162,7 +166,6 @@ create table run_by
 
 
 
-
 delete from run_by;
 delete from controlled_by;
 delete from ride;
@@ -181,7 +184,6 @@ delete from station_staff;
 delete from staff; 
 delete from station;
 delete from Accident_Reports; 
-
 
 insert into Accident_Reports values('12:15:18', 'Pawnee', 'Repairing', '01', '15'); -- parks and rec
 insert into Accident_Reports values('14:45:00', 'New York', 'Repaired', '02', '7'); -- Mad men 
@@ -230,7 +232,7 @@ insert into monitored_by values('Gotham', '309552569');
 insert into monitored_by values('New York', '184287649');  
 insert into monitored_by values('Washington DC', '410018282'); 
 
-insert into passengers values('007363335', 'Diana', 'Prince', '2015-04-16', '15:20:01', 'Gotham');-- Olympus Train 
+insert into passengers values('007363335', 'Diana', 'Prince', '2015-04-16', '15:20:01', 'Gotham'); -- Olympus Train 
 insert into passengers values('514257547', 'Olivia', 'Pope', '2015-04-16', '16:01:31', 'Washington DC');
 insert into passengers values('543718883', 'Abby', 'Whelan', '2015-04-16', '16:02:05', 'Washington DC');
 insert into passengers values('104572807', 'Mellie', 'Grant', '2015-04-16', '16:05:00', 'Washington DC');
@@ -374,53 +376,54 @@ insert into verifies_ticket values('747750344', '680067207');
 insert into verifies_ticket values('747750344', '837285986');
 insert into verifies_ticket values('747750344', '391547463');
 
-insert into tickets values('Olympia', '1');-- W Train 
-insert into tickets values('Olympia', '2');
-insert into tickets values('Pawnee', '3');
-insert into tickets values('Pawnee', '4');
-insert into tickets values('Gotham', '5');
-insert into tickets values('Washigton Dc', '6');
-insert into tickets values('Washington DC', '7');
-insert into tickets values('Olympia', '8');
-insert into tickets values('New York',  '9'); 
 
-insert into tickets values('Pawnee', '1'); -- Pawnee Train 
-insert into tickets values('Pawnee',  '2');
-insert into tickets values('Pawnee', '3');
-insert into tickets values('Pawnee', '4');
-insert into tickets values('Gotham', '5');
-insert into tickets values('Gotham',  '6');
-insert into tickets values('New York',  '7');
-insert into tickets values('Olympia', '8');
-insert into tickets values('New York',  '9');
-insert into tickets values('New York', '10');
-insert into tickets values('New York', '11'); 
+insert into tickets values('Gotham', '1', '1', '007363335'); -- W Train 
+insert into tickets values('Washington DC', '2', '1', '514257547');
+insert into tickets values('Washington DC', '3' , '1', '543718883' );
+insert into tickets values('Washington DC', '4', '1', '104572807');
+insert into tickets values('New York', '5', '1', '944700359' );
+insert into tickets values('New York', '6', '1', '942551538' );
+insert into tickets values('New York', '7', '1', '403973604');
+insert into tickets values('Pawnee', '8', '1', '896386824');
+insert into tickets values('Pawnee',  '9', '1','549975567'); 
 
-insert into tickets values('New York', '1'); -- Mad Men train
-insert into tickets values('New York', '1');
-insert into tickets values('Washington DC', '3');
-insert into tickets values('Pawnee', '4'); 
-insert into tickets values('Pawnee', '5'); 
-insert into tickets values('Pawnee', '6'); 
-insert into tickets values('Washington DC', '7');
+insert into tickets values('Washington DC', '1', '2', '669842436'); -- Pawnee Train 
+insert into tickets values('Washington DC', '2', '2', '291240430');
+insert into tickets values('Washington DC', '3', '2', '421044894');
+insert into tickets values('Washington DC', '4', '2', '914122837');
+insert into tickets values('New York',      '5', '2', '136942594' );
+insert into tickets values('New York',      '6', '2', '295805849');
+insert into tickets values('Washington DC', '7', '2', '594665917');
+insert into tickets values('Washington DC', '8', '2', '347498946');
+insert into tickets values('Washington DC', '9', '2', '309541694');
+insert into tickets values('Washington DC', '10','2', '911717312');
+insert into tickets values('Washington DC', '11','2', '569457203'); 
 
-insert into tickets values('Gotham', '1'); -- DC train 
-insert into tickets values('Washington DC', '2');
-insert into tickets values('Gotham', '3');
-insert into tickets values('Gotham', '4');
-insert into tickets values('New York', '5');
-insert into tickets values('New York', '6');
-insert into tickets values('New York', '7');
-insert into tickets values('Washington DC', '8');
-insert into tickets values('New York',  '9');
-insert into tickets values('Gotham', '10');
+insert into tickets values('New York', '1', '3', '002087219'); -- DC train 
+insert into tickets values('New York', '2', '3', '940193423' );
+insert into tickets values('New York', '3', '3', '324794477');
+insert into tickets values('Olympia', '4', '3', '833128703');
+insert into tickets values('Pawnee', '5', '3', '896168318');
+insert into tickets values('Pawnee', '6', '3', '186026511');
+insert into tickets values('Gotham', '7', '3', '156111049' );
+insert into tickets values('Olympia', '8', '3','943548203');
+insert into tickets values('Olympia',  '9', '3', '720948119');
+insert into tickets values('Olympia', '10', '3', '795905967');
 
-insert into tickets values('New York', '1'); -- Avenger's train 
-insert into tickets values('New York', '2');
-insert into tickets values('New York', '3');
-insert into tickets values('Pawnee', '4'); 
-insert into tickets values('Washington DC', '5');  
-insert into tickets values('New York', '6');  
+insert into tickets values('Gotham', '1', '4', '247765883' ); -- Mad Men train
+insert into tickets values('Gotham', '2', '4', '707654622');
+insert into tickets values('New York', '3', '4', '841045194');
+insert into tickets values('New York', '4', '4', '210965927'); 
+insert into tickets values('New York', '5', '4', '874512624'); 
+insert into tickets values('New York', '6', '4', '190155474'); 
+insert into tickets values('New York', '7', '4', '006468445');
+
+insert into tickets values('Washington DC', '1', '5', '597359298'); -- Avenger's train 
+insert into tickets values('Washington DC', '2', '5', '096351016');
+insert into tickets values('Pawnee', '3', '5', '333383043');
+insert into tickets values('New York', '4', '5', '680067207'); 
+insert into tickets values('New York', '5', '5', '837285986');  
+insert into tickets values('New York', '6', '5', '391547463');  
 
 insert into train values('73.04', '1', '250', 'On-Time', 'Gotham'); -- W train 
 insert into train values('74.00', '2', '200', 'On-Time', 'New York'); -- Parks and rec train
@@ -472,7 +475,7 @@ insert into arrive values('13:00:00','Olympia',  '5');
 insert into arrive values('15:00:00', 'Pawnee', '5'); 
 insert into arrive values('17:30:00', 'Gotham', '5'); 
 insert into arrive values('18:45:00', 'New York', '5');  
-insert into arrive values('15:00:00', 'Washington DC', '5'); -- issue
+insert into arrive values('15:00:00', 'Washington DC', '5'); 
 
 insert into depart values('11:40:00', 'Olympia', '1');
 insert into depart values('03:30:00', 'Pawnee', '1');
@@ -482,7 +485,7 @@ insert into depart values( '18:00:00', 'Washington DC', '1');
 
 insert into depart values('12:00:00', 'Pawnee', '2'); 
 insert into depart values('03:00:00', 'Gotham', '2'); 
-insert into depart values('23:45:00', 'New York', '2'); -- issue
+insert into depart values('23:45:00', 'New York', '2');
 insert into depart values('01:00:00', 'Washington DC', '2'); 
 insert into depart values ('22:00:00', 'Olympia', '2'); 
 
